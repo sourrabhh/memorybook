@@ -1,5 +1,6 @@
 package com.context.memorybook.models;
 
+import com.context.memorybook.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -32,6 +33,8 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.USER;
     private LocalDateTime createdAt;
 
     @PrePersist
