@@ -1,17 +1,15 @@
-package com.context.memorybook.service;
+package com.context.memorybook.infrastructure.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 import java.security.Key;
-import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,11 +17,8 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
+    @Value("${jwt.secret}")
     private String secretKey;
-
-    public JwtService() {
-        secretKey = generateSecretKey();
-    }
 
     public String generateToken(String username){
         Map<String, Object> claims = new HashMap<>();
@@ -33,27 +28,25 @@ public class JwtService {
                 .setClaims(claims)
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000*60*5))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000*60*60*24))
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public String generateSecretKey(){
-        try{
-            KeyGenerator keyGenerator = KeyGenerator.getInstance("HmacSHA256");
-            keyGenerator.init(256);
-            SecretKey secretKey = keyGenerator.generateKey();
-            System.out.println("Secret Key :: " + secretKey.toString());
-            String encodedKey = Base64.getUrlEncoder().withoutPadding().encodeToString(secretKey.getEncoded());
-
-            return encodedKey;
-        } catch (Exception e) {
-            throw new RuntimeException(" Error in Generating key ",e);
-        }
-    }
 
     private Key getKey(){
-        byte[] keyBytes = Decoders.BASE64URL.decode(secretKey);
+        // Convert plain string secret to bytes
+        // Ensure minimum 256 bits (32 bytes) for HMAC-SHA256
+        byte[] keyBytes = secretKey.getBytes();
+        
+        // If key is too short, pad it to meet minimum requirement
+        if (keyBytes.length < 32) {
+            byte[] paddedKey = new byte[32];
+            System.arraycopy(keyBytes, 0, paddedKey, 0, keyBytes.length);
+            // Fill remaining bytes with zeros
+            keyBytes = paddedKey;
+        }
+        
         return Keys.hmacShaKeyFor(keyBytes);
     }
 

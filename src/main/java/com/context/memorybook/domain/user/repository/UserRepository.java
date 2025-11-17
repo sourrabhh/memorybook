@@ -1,6 +1,6 @@
-package com.context.memorybook.repository;
+package com.context.memorybook.domain.user.repository;
 
-import com.context.memorybook.models.User;
+import com.context.memorybook.domain.user.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

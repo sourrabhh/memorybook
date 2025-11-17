@@ -1,8 +1,7 @@
-package com.context.memorybook.service;
+package com.context.memorybook.infrastructure.security;
 
-import com.context.memorybook.models.User;
-import com.context.memorybook.models.UserPrincipal;
-import com.context.memorybook.repository.UserRepository;
+import com.context.memorybook.domain.user.model.User;
+import com.context.memorybook.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

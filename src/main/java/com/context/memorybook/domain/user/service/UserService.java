@@ -1,18 +1,20 @@
-package com.context.memorybook.service;
+package com.context.memorybook.domain.user.service;
 
-import com.context.memorybook.enums.Role;
-import com.context.memorybook.models.User;
-import com.context.memorybook.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
+import com.context.memorybook.common.enums.Role;
+import com.context.memorybook.domain.user.model.User;
+import com.context.memorybook.domain.user.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class UserService {
-    private final UserRepository userRepository;
 
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     public String registerUser(User user){
         if(userRepository.existsByEmail(user.getEmail())){

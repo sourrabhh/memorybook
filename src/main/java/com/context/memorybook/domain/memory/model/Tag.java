@@ -1,9 +1,8 @@
-package com.context.memorybook.models;
+package com.context.memorybook.domain.memory.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;

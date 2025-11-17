@@ -1,6 +1,6 @@
-package com.context.memorybook.models;
+package com.context.memorybook.domain.user.model;
 
-import com.context.memorybook.enums.Role;
+import com.context.memorybook.common.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 @Entity

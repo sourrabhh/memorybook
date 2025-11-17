@@ -1,6 +1,6 @@
-package com.context.memorybook.repository;
+package com.context.memorybook.domain.memory.repository;
 
-import com.context.memorybook.models.Tag;
+import com.context.memorybook.domain.memory.model.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,9 +1,8 @@
-package com.context.memorybook.controller;
+package com.context.memorybook.domain.user.controller;
 
-import com.context.memorybook.models.User;
-import com.context.memorybook.service.JwtService;
-import com.context.memorybook.service.UserService;
-import lombok.RequiredArgsConstructor;
+import com.context.memorybook.domain.user.model.User;
+import com.context.memorybook.infrastructure.security.JwtService;
+import com.context.memorybook.domain.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,13 +12,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
-@RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+    @Autowired
+    private UserService userService;
 
     @Autowired
-    AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
     private JwtService jwtService;
@@ -43,11 +42,6 @@ public class UserController {
             return jwtService.generateToken(user.getUsername());
         else
             return "Login failure";
-    }
-
-    @GetMapping("/test")
-    public String test(){
-        return "Hello World";
     }
 
 }
