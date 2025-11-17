@@ -1,0 +1,415 @@
+{
+  "info": {
+    "name": "MemoryBook API",
+    "description": "Complete API collection for MemoryBook application",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "1. Signup",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"password123\",\n  \"role\": \"USER\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/signup",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "signup"]
+            }
+          }
+        },
+        {
+          "name": "2. Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var token = pm.response.text().replace(/\"/g, '');",
+                  "    pm.environment.set('token', token);",
+                  "    console.log('Token saved:', token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"john.doe@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Content",
+      "item": [
+        {
+          "name": "3. Share Content - Article 1",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"ARTICLE\",\n  \"title\": \"Introduction to Spring Boot\",\n  \"description\": \"Learn the basics of Spring Boot framework\",\n  \"textContent\": \"Spring Boot is a powerful framework that simplifies Java development. It provides auto-configuration and convention over configuration approach.\",\n  \"source\": \"Tech Blog\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/content/share",
+              "host": ["{{base_url}}"],
+              "path": ["api", "content", "share"]
+            }
+          }
+        },
+        {
+          "name": "4. Share Content - Article 2 (Similar)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"ARTICLE\",\n  \"title\": \"Spring Boot Best Practices\",\n  \"description\": \"Essential tips for Spring Boot development\",\n  \"textContent\": \"Spring Boot offers many best practices including dependency management, configuration properties, and testing strategies.\",\n  \"source\": \"Dev Blog\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/content/share",
+              "host": ["{{base_url}}"],
+              "path": ["api", "content", "share"]
+            }
+          }
+        },
+        {
+          "name": "5. Share Content - Different Topic",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"ARTICLE\",\n  \"title\": \"Getting Started with React\",\n  \"description\": \"Learn React fundamentals\",\n  \"textContent\": \"React is a JavaScript library for building user interfaces. It uses components and virtual DOM.\",\n  \"source\": \"Frontend Blog\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/content/share",
+              "host": ["{{base_url}}"],
+              "path": ["api", "content", "share"]
+            }
+          }
+        },
+        {
+          "name": "6. Get My Content",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/content/my-content",
+              "host": ["{{base_url}}"],
+              "path": ["api", "content", "my-content"]
+            }
+          }
+        },
+        {
+          "name": "7. Get Content by Type - ARTICLE",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/content/my-content/type/ARTICLE",
+              "host": ["{{base_url}}"],
+              "path": ["api", "content", "my-content", "type", "ARTICLE"]
+            }
+          }
+        },
+        {
+          "name": "8. Search Content",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/content/my-content/search?query=spring",
+              "host": ["{{base_url}}"],
+              "path": ["api", "content", "my-content", "search"],
+              "query": [
+                {
+                  "key": "query",
+                  "value": "spring"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "9. Share Blog Post",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"BLOG\",\n  \"title\": \"My Journey with Spring Boot\",\n  \"description\": \"Personal experience learning Spring Boot\",\n  \"textContent\": \"I started learning Spring Boot last year and it has been amazing...\",\n  \"source\": \"Personal Blog\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/content/share",
+              "host": ["{{base_url}}"],
+              "path": ["api", "content", "share"]
+            }
+          }
+        },
+        {
+          "name": "10. Share Link",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"LINK\",\n  \"title\": \"Spring Boot Documentation\",\n  \"description\": \"Official Spring Boot documentation\",\n  \"url\": \"https://spring.io/projects/spring-boot\",\n  \"source\": \"Spring Official\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/content/share",
+              "host": ["{{base_url}}"],
+              "path": ["api", "content", "share"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Memories",
+      "item": [
+        {
+          "name": "11. Get All Memories",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/memories",
+              "host": ["{{base_url}}"],
+              "path": ["api", "memories"]
+            }
+          }
+        },
+        {
+          "name": "12. Get Memory by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/memories/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "memories", "1"]
+            }
+          }
+        },
+        {
+          "name": "13. Search Memories",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/memories/search?query=spring",
+              "host": ["{{base_url}}"],
+              "path": ["api", "memories", "search"],
+              "query": [
+                {
+                  "key": "query",
+                  "value": "spring"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "14. Get Memories by Context",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/memories/context/spring",
+              "host": ["{{base_url}}"],
+              "path": ["api", "memories", "context", "spring"]
+            }
+          }
+        },
+        {
+          "name": "15. Create Memory",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"context\": \"Python Programming\",\n  \"type\": \"Note\",\n  \"content\": \"Python is a versatile programming language\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/memories",
+              "host": ["{{base_url}}"],
+              "path": ["api", "memories"]
+            }
+          }
+        },
+        {
+          "name": "16. Update Memory",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"context\": \"Updated Spring Boot Context\",\n  \"content\": \"Updated content about Spring Boot\",\n  \"type\": \"Note\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/memories/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "memories", "1"]
+            }
+          }
+        },
+        {
+          "name": "17. Delete Memory",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/memories/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "memories", "1"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+
